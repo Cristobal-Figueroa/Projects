@@ -9,7 +9,7 @@ This program prints a classic greeting and a short personal introduction to the 
 3. Run `node index.js` to see the messages in the console.
 
 ## Demo Video
-[Coming soon]
+[https://youtu.be/tmJma1l7iEo](https://youtu.be/tmJma1l7iEo)
 
 ## What I Learned
 I refreshed JavaScript fundamentals to craft a simple, well-documented script.

@@ -1,4 +1,4 @@
 const greetingMessage = "Hello World!";
-const introductionMessage = "I am Cristobal Figueroa, CS student at BYU-Pathway.";
+const introductionMessage = "I am Cristobal Figueroa.";
 console.log(greetingMessage);
 console.log(introductionMessage);
