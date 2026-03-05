@@ -11,6 +11,9 @@ This program prints a classic greeting and a short personal introduction to the 
 ## Demo Video
 [https://youtu.be/tmJma1l7iEo](https://youtu.be/tmJma1l7iEo)
 
+## Repository
+[https://github.com/Cristobal-Figueroa/Projects](https://github.com/Cristobal-Figueroa/Projects)
+
 ## What I Learned
 I refreshed JavaScript fundamentals to craft a simple, well-documented script.
 
