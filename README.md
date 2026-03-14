@@ -7,7 +7,7 @@ This React + Vite project implements a localStorage-backed to-do list with a sim
 [Watch the demo here](https://youtu.be/tbd)
 
 ## Technologies Used
-- JavaScript
+- JavaScript 
 - React + Vite
 - UUID (npm package)
 - HTML/CSS
