@@ -1,21 +1,28 @@
-# Hello World
+# To-Do List App
 
 ## Overview
-This program prints a classic greeting and a short personal introduction to the console.
-
-## How to Run
-1. Make sure you have Node.js installed.
-2. Open a terminal in the project folder.
-3. Run `node index.js` to see the messages in the console.
+This React + Vite project implements a localStorage-backed to-do list with a simple login screen, task filters, nested subtasks, and progress stats calculated with modern ES6 array helpers.
 
 ## Demo Video
-[https://youtu.be/tmJma1l7iEo](https://youtu.be/tmJma1l7iEo)
+[Watch the demo here](https://youtu.be/tbd)
 
-## Repository
-[https://github.com/Cristobal-Figueroa/Projects](https://github.com/Cristobal-Figueroa/Projects)
+## Technologies Used
+- JavaScript
+- React + Vite
+- UUID (npm package)
+- HTML/CSS
 
-## What I Learned
-I refreshed JavaScript fundamentals to craft a simple, well-documented script.
+## Development Environment
+- Visual Studio Code
+- Node.js
+- Git / GitHub
 
-## Author
-Cristobal Figueroa
+## Useful Websites
+- [MDN JavaScript Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+- [React Documentation](https://react.dev)
+- [Vite Documentation](https://vitejs.dev)
+
+## Future Work
+- Add due dates to tasks
+- Add priority levels
+- Connect to a real database
