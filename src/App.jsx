@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { v4 as uuidv4 } from 'uuid'
 import './App.css'
 import Login from './components/Login.jsx'
 import TaskList from './components/TaskList.jsx'
+import Dashboard from './components/Dashboard.jsx'
+import Profile from './components/Profile.jsx'
+import Navbar from './components/Navbar.jsx'
 
 const TASKS_KEY = 'week2_tasks'
 const USER_KEY = 'week2_user'
@@ -11,11 +15,14 @@ const USER_KEY = 'week2_user'
  * Creates an initial list of tasks with sample subtasks to populate the UI.
  */
 function createSeedTasks() {
+  const now = new Date().toISOString()
   return [
     {
       id: uuidv4(),
       title: 'Prepare CS 310 discussion post',
       completed: false,
+      category: 'School',
+      createdAt: now,
       subtasks: [
         { id: uuidv4(), title: 'Outline key ideas', completed: true },
         { id: uuidv4(), title: 'Record video summary', completed: false },
@@ -25,6 +32,8 @@ function createSeedTasks() {
       id: uuidv4(),
       title: 'Finish data structures homework',
       completed: false,
+      category: 'School',
+      createdAt: new Date(Date.now() - 86400000).toISOString(),
       subtasks: [
         { id: uuidv4(), title: 'Implement linked list', completed: true },
         { id: uuidv4(), title: 'Write tests', completed: false },
@@ -34,6 +43,8 @@ function createSeedTasks() {
       id: uuidv4(),
       title: 'Plan mentorship meeting',
       completed: true,
+      category: 'Personal',
+      createdAt: new Date(Date.now() - 172800000).toISOString(),
       subtasks: [
         { id: uuidv4(), title: 'Send agenda', completed: true },
         { id: uuidv4(), title: 'Collect questions', completed: true },
@@ -146,6 +157,8 @@ function App() {
   const [tasks, setTasks] = useState(() => getStoredTasks())
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [filter, setFilter] = useState('all')
+  const [sortBy, setSortBy] = useState('date')
+  const [selectedCategory, setSelectedCategory] = useState('All')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -166,8 +179,9 @@ function App() {
 
   /**
    * Adds a new task to the list when the input has a non-empty value.
+   * Accepts an optional array of subtask titles.
    */
-  const handleAddTask = () => {
+  const handleAddTask = (category = 'General', subtaskTitles = []) => {
     const trimmed = newTaskTitle.trim()
     if (!trimmed) {
       return
@@ -177,7 +191,13 @@ function App() {
         id: uuidv4(),
         title: trimmed,
         completed: false,
-        subtasks: [],
+        category,
+        createdAt: new Date().toISOString(),
+        subtasks: subtaskTitles.map((title) => ({
+          id: uuidv4(),
+          title,
+          completed: false,
+        })),
       },
       ...prev,
     ])
@@ -220,19 +240,27 @@ function App() {
   }
 
   /**
-   * Filters tasks according to the currently selected status.
+   * Filters and sorts tasks according to the current settings.
    */
-  const filteredTasks = useMemo(() => {
-    return tasks.filter((task) => {
-      if (filter === 'completed') {
-        return task.completed
-      }
-      if (filter === 'pending') {
-        return !task.completed
-      }
+  const filteredAndSortedTasks = useMemo(() => {
+    let result = tasks.filter((task) => {
+      if (filter === 'completed') return task.completed
+      if (filter === 'pending') return !task.completed
       return true
     })
-  }, [tasks, filter])
+
+    if (selectedCategory !== 'All') {
+      result = result.filter((task) => task.category === selectedCategory)
+    }
+
+    if (sortBy === 'date') {
+      result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    } else if (sortBy === 'alpha') {
+      result.sort((a, b) => a.title.localeCompare(b.title))
+    }
+
+    return result
+  }, [tasks, filter, sortBy, selectedCategory])
 
   /**
    * Computes the total number of completed tasks using reduce.
@@ -246,91 +274,45 @@ function App() {
 
   if (!userName) {
     return (
-      <div className="app-shell">
-        <Login onLogin={handleLogin} />
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Login onLogin={handleLogin} />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </Router>
     )
   }
 
   return (
-    <div className="app-shell">
-      <header className="app-header">
-        <div>
-          <p className="welcome">Bienvenido, {userName}</p>
-          <h1>Week 2 To-Do Tracker</h1>
-          <p className="tagline">
-            Track homework, projects, and subtasks with local persistence.
-          </p>
-        </div>
-        <button className="secondary" type="button" onClick={handleLogout}>
-          Log out
-        </button>
-      </header>
-
-      <section className="summary-panel">
-        <div>
-          <p className="stat-label">Completed tasks</p>
-          <p className="stat-value">{completedTotal}</p>
-        </div>
-        <div>
-          <p className="stat-label">Total tasks (with subtasks)</p>
-          <p className="stat-value">{nestedTotal}</p>
-        </div>
-        <div>
-          <p className="stat-label">Filter</p>
-          <div className="filter-buttons">
-            <button
-              type="button"
-              className={filter === 'all' ? 'active' : ''}
-              onClick={() => handleFilterChange('all')}
-            >
-              All
-            </button>
-            <button
-              type="button"
-              className={filter === 'completed' ? 'active' : ''}
-              onClick={() => handleFilterChange('completed')}
-            >
-              Completed
-            </button>
-            <button
-              type="button"
-              className={filter === 'pending' ? 'active' : ''}
-              onClick={() => handleFilterChange('pending')}
-            >
-              Pending
-            </button>
-          </div>
-        </div>
-      </section>
-
-      <section className="builder">
-        <label htmlFor="newTask">Add a task</label>
-        <div className="input-row">
-          <input
-            id="newTask"
-            type="text"
-            placeholder="Describe the task..."
-            value={newTaskTitle}
-            onChange={(event) => setNewTaskTitle(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === 'Enter') {
-                handleAddTask()
-              }
-            }}
+    <Router>
+      <Navbar userName={userName} />
+      <div className="app-shell">
+        <Routes>
+          <Route
+            path="/tasks"
+            element={
+              <TaskList
+                tasks={filteredAndSortedTasks}
+                onToggleComplete={handleToggleComplete}
+                onDeleteTask={handleDeleteTask}
+                filter={filter}
+                sortBy={sortBy}
+                selectedCategory={selectedCategory}
+                onFilterChange={handleFilterChange}
+                onSortChange={setSortBy}
+                onCategoryChange={setSelectedCategory}
+                onAddTask={handleAddTask}
+                newTaskTitle={newTaskTitle}
+                onNewTaskTitleChange={setNewTaskTitle}
+              />
+            }
           />
-          <button type="button" onClick={handleAddTask}>
-            Add task
-          </button>
-        </div>
-      </section>
-
-      <TaskList
-        tasks={filteredTasks}
-        onToggleComplete={handleToggleComplete}
-        onDeleteTask={handleDeleteTask}
-      />
-    </div>
+          <Route path="/dashboard" element={<Dashboard tasks={tasks} />} />
+          <Route path="/profile" element={<Profile tasks={tasks} />} />
+          <Route path="*" element={<Navigate to="/tasks" />} />
+        </Routes>
+      </div>
+    </Router>
   )
 }
 

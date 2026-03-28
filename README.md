@@ -1,16 +1,16 @@
-# To-Do List App
+# To-Do List Web App
 
 ## Overview
-This React + Vite project implements a localStorage-backed to-do list with a simple login screen, task filters, nested subtasks, and progress stats calculated with modern ES6 array helpers.
+A React + Vite single‑page web app that lets users log in, manage tasks and subtasks, filter/sort by status or category, view completion progress, and navigate between Tasks, Dashboard, and Profile views—all persisted to localStorage.
 
 ## Demo Video
 [Watch the demo here](https://youtu.be/tbd)
 
 ## Technologies Used
-- JavaScript 
 - React + Vite
-- UUID (npm package)
-- HTML/CSS
+- React Router DOM
+- UUID
+- CSS
 
 ## Development Environment
 - Visual Studio Code
@@ -18,11 +18,11 @@ This React + Vite project implements a localStorage-backed to-do list with a sim
 - Git / GitHub
 
 ## Useful Websites
-- [MDN JavaScript Docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 - [React Documentation](https://react.dev)
+- [React Router Documentation](https://reactrouter.com)
 - [Vite Documentation](https://vitejs.dev)
 
 ## Future Work
-- Add due dates to tasks
-- Add priority levels
-- Connect to a real database
+- Connect to a real SQL database
+- Add user authentication with a backend
+- Add due dates and priorities

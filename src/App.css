@@ -8,6 +8,179 @@
   gap: 32px;
 }
 
+/* Navbar */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.navbar__brand h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+.navbar__links {
+  display: flex;
+  gap: 16px;
+}
+
+.navbar__links a {
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.navbar__links a.active,
+.navbar__links a:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.navbar__user span {
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Controls */
+.task-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.control-group label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.control-group select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  font: inherit;
+}
+
+/* Progress bar */
+.progress-section {
+  margin-bottom: 24px;
+}
+
+.progress-label {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 8px;
+  background: var(--empty-bg);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Task meta */
+.task-meta {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.task-category,
+.task-date {
+  font-size: 0.8rem;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--empty-bg);
+  color: var(--muted);
+}
+
+/* Dashboard */
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.stat-card {
+  padding: 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  text-align: center;
+}
+
+/* Profile */
+.profile {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.profile__card {
+  padding: 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.profile__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile__input-row {
+  display: flex;
+  gap: 12px;
+}
+
+.profile__input-row input {
+  flex: 1;
+}
+
+.profile__stats {
+  text-align: center;
+}
+
+/* Existing styles kept */
 .app-header {
   display: flex;
   justify-content: space-between;
@@ -73,7 +246,7 @@
   background: var(--card-bg);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .builder label {
@@ -87,6 +260,49 @@
 
 .input-row input {
   flex: 1;
+}
+
+.subtasks-builder {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subtask-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.subtask-input-row input {
+  flex: 1;
+}
+
+.subtasks-preview {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subtasks-preview li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 10px;
+  background: var(--empty-bg);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.subtasks-preview li span {
+  color: var(--text);
+}
+
+.subtasks-preview .small {
+  font-size: 0.75rem;
+  padding: 4px 8px;
 }
 
 .task-section {
@@ -122,14 +338,27 @@
 
 .task-item {
   display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 12px 16px;
   background: #fff;
   box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.task-item > .task-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.task-item > .task-actions {
+  display: flex;
+  gap: 8px;
+  align-self: flex-end;
 }
 
 .task-item span.completed {
@@ -189,7 +418,7 @@
 
 .task-actions {
   display: flex;
-  gap: 12px;
+  gap: 8px;
 }
 
 .empty-state {
@@ -237,17 +466,23 @@ textarea {
 button {
   border-radius: 999px;
   border: none;
-  padding: 10px 18px;
+  padding: 8px 14px;
   background: #0f172a;
   color: white;
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.9rem;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 button:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 25px rgba(15, 23, 42, 0.2);
+}
+
+button.small {
+  padding: 4px 8px;
+  font-size: 0.8rem;
 }
 
 button.secondary {
@@ -273,8 +508,18 @@ input {
     padding: 32px 16px 48px;
   }
 
-  .app-header {
+  .navbar {
     flex-direction: column;
+    gap: 12px;
+  }
+
+  .navbar__links {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .task-controls {
+    grid-template-columns: 1fr;
   }
 
   .input-row {

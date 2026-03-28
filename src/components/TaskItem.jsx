@@ -1,5 +1,6 @@
 /**
  * Renders a single task row including buttons to complete or delete it.
+ * Shows category, creation date, and nested subtasks with compact buttons.
  */
 function TaskItem({ task, level = 0, onToggleComplete, onDeleteTask }) {
   const indent = { paddingLeft: `${8 + level * 16}px` }
@@ -18,14 +19,22 @@ function TaskItem({ task, level = 0, onToggleComplete, onDeleteTask }) {
             {task.title}
           </span>
         </label>
+        <div className="task-meta">
+          {task.category && <span className="task-category">{task.category}</span>}
+          {task.createdAt && (
+            <span className="task-date">
+              {new Date(task.createdAt).toLocaleDateString()}
+            </span>
+          )}
+        </div>
       </div>
       <div className="task-actions">
-        <button type="button" onClick={() => onToggleComplete(task.id)}>
+        <button type="button" className="small" onClick={() => onToggleComplete(task.id)}>
           {task.completed ? 'Undo' : 'Complete'}
         </button>
         <button
           type="button"
-          className="secondary"
+          className="secondary small"
           onClick={() => onDeleteTask(task.id)}
         >
           Delete
