@@ -20,34 +20,37 @@ function createSeedTasks() {
     {
       id: uuidv4(),
       title: 'Prepare CS 310 discussion post',
+      description: 'Outline key ideas and record a 2‑minute video summary for the weekly discussion.',
       completed: false,
       category: 'School',
       createdAt: now,
       subtasks: [
-        { id: uuidv4(), title: 'Outline key ideas', completed: true },
-        { id: uuidv4(), title: 'Record video summary', completed: false },
+        { id: uuidv4(), title: 'Outline key ideas', description: 'List 3 main points', completed: true },
+        { id: uuidv4(), title: 'Record video summary', description: '2‑minute clip', completed: false },
       ],
     },
     {
       id: uuidv4(),
       title: 'Finish data structures homework',
+      description: 'Implement linked list and write unit tests.',
       completed: false,
       category: 'School',
       createdAt: new Date(Date.now() - 86400000).toISOString(),
       subtasks: [
-        { id: uuidv4(), title: 'Implement linked list', completed: true },
-        { id: uuidv4(), title: 'Write tests', completed: false },
+        { id: uuidv4(), title: 'Implement linked list', description: 'Singly linked list', completed: true },
+        { id: uuidv4(), title: 'Write tests', description: 'Cover edge cases', completed: false },
       ],
     },
     {
       id: uuidv4(),
       title: 'Plan mentorship meeting',
+      description: 'Send agenda and collect questions before the meeting.',
       completed: true,
       category: 'Personal',
       createdAt: new Date(Date.now() - 172800000).toISOString(),
       subtasks: [
-        { id: uuidv4(), title: 'Send agenda', completed: true },
-        { id: uuidv4(), title: 'Collect questions', completed: true },
+        { id: uuidv4(), title: 'Send agenda', description: 'Email with topics', completed: true },
+        { id: uuidv4(), title: 'Collect questions', description: 'Gather from mentees', completed: true },
       ],
     },
   ]
@@ -57,21 +60,7 @@ function createSeedTasks() {
  * Reads tasks stored in localStorage or falls back to the seeded list.
  */
 function getStoredTasks() {
-  if (typeof window === 'undefined') {
-    return createSeedTasks()
-  }
-
-  try {
-    const stored = window.localStorage.getItem(TASKS_KEY)
-    if (stored) {
-      const parsed = JSON.parse(stored)
-      if (Array.isArray(parsed)) {
-        return parsed
-      }
-    }
-  } catch (error) {
-    console.error('Unable to read tasks from storage', error)
-  }
+  // Always return fresh seed tasks for now
   return createSeedTasks()
 }
 
@@ -156,9 +145,11 @@ function App() {
   const [userName, setUserName] = useState(() => getStoredUser())
   const [tasks, setTasks] = useState(() => getStoredTasks())
   const [newTaskTitle, setNewTaskTitle] = useState('')
+  const [newTaskDescription, setNewTaskDescription] = useState('')
   const [filter, setFilter] = useState('all')
   const [sortBy, setSortBy] = useState('date')
   const [selectedCategory, setSelectedCategory] = useState('All')
+  const [filterDate, setFilterDate] = useState('')
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -179,9 +170,9 @@ function App() {
 
   /**
    * Adds a new task to the list when the input has a non-empty value.
-   * Accepts an optional array of subtask titles.
+   * Accepts an optional array of subtask titles and descriptions.
    */
-  const handleAddTask = (category = 'General', subtaskTitles = []) => {
+  const handleAddTask = (category = 'General', subtaskData = []) => {
     const trimmed = newTaskTitle.trim()
     if (!trimmed) {
       return
@@ -190,18 +181,21 @@ function App() {
       {
         id: uuidv4(),
         title: trimmed,
+        description: newTaskDescription.trim(),
         completed: false,
         category,
         createdAt: new Date().toISOString(),
-        subtasks: subtaskTitles.map((title) => ({
+        subtasks: subtaskData.map(({ title, description }) => ({
           id: uuidv4(),
           title,
+          description,
           completed: false,
         })),
       },
       ...prev,
     ])
     setNewTaskTitle('')
+    setNewTaskDescription('')
   }
 
   /**
@@ -253,6 +247,13 @@ function App() {
       result = result.filter((task) => task.category === selectedCategory)
     }
 
+    if (filterDate) {
+      result = result.filter((task) => {
+        const taskDate = new Date(task.createdAt).toISOString().split('T')[0]
+        return taskDate === filterDate
+      })
+    }
+
     if (sortBy === 'date') {
       result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
     } else if (sortBy === 'alpha') {
@@ -260,7 +261,7 @@ function App() {
     }
 
     return result
-  }, [tasks, filter, sortBy, selectedCategory])
+  }, [tasks, filter, sortBy, selectedCategory, filterDate])
 
   /**
    * Computes the total number of completed tasks using reduce.
@@ -304,6 +305,10 @@ function App() {
                 onAddTask={handleAddTask}
                 newTaskTitle={newTaskTitle}
                 onNewTaskTitleChange={setNewTaskTitle}
+                newTaskDescription={newTaskDescription}
+                onNewTaskDescriptionChange={setNewTaskDescription}
+                filterDate={filterDate}
+                onFilterDateChange={setFilterDate}
               />
             }
           />

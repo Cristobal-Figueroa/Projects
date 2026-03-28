@@ -1,6 +1,6 @@
 /**
  * Renders a single task row including buttons to complete or delete it.
- * Shows category, creation date, and nested subtasks with compact buttons.
+ * Shows category, creation date, description, and nested subtasks with compact icon buttons.
  */
 function TaskItem({ task, level = 0, onToggleComplete, onDeleteTask }) {
   const indent = { paddingLeft: `${8 + level * 16}px` }
@@ -19,6 +19,9 @@ function TaskItem({ task, level = 0, onToggleComplete, onDeleteTask }) {
             {task.title}
           </span>
         </label>
+        {task.description && (
+          <p className="task-description">{task.description}</p>
+        )}
         <div className="task-meta">
           {task.category && <span className="task-category">{task.category}</span>}
           {task.createdAt && (
@@ -29,15 +32,21 @@ function TaskItem({ task, level = 0, onToggleComplete, onDeleteTask }) {
         </div>
       </div>
       <div className="task-actions">
-        <button type="button" className="small" onClick={() => onToggleComplete(task.id)}>
-          {task.completed ? 'Undo' : 'Complete'}
+        <button
+          type="button"
+          className="small icon-only"
+          onClick={() => onToggleComplete(task.id)}
+          aria-label={task.completed ? 'Undo' : 'Complete'}
+        >
+          {task.completed ? '↶' : '✓'}
         </button>
         <button
           type="button"
-          className="secondary small"
+          className="secondary small icon-only delete-red"
           onClick={() => onDeleteTask(task.id)}
+          aria-label="Delete"
         >
-          Delete
+          🗑
         </button>
       </div>
 

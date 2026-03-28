@@ -18,8 +18,13 @@ function TaskList({
   onAddTask,
   newTaskTitle,
   onNewTaskTitleChange,
+  newTaskDescription,
+  onNewTaskDescriptionChange,
+  filterDate,
+  onFilterDateChange,
 }) {
   const [subtaskInput, setSubtaskInput] = useState('')
+  const [subtaskDescInput, setSubtaskDescInput] = useState('')
   const [subtasks, setSubtasks] = useState([])
 
   const hasTasks = tasks?.length > 0
@@ -29,13 +34,14 @@ function TaskList({
   const categories = ['All', 'School', 'Personal', 'General']
 
   /**
-   * Adds a subtask title to the temporary list when Enter is pressed.
+   * Adds a subtask title and description to the temporary list when Enter is pressed.
    */
   const handleAddSubtask = () => {
-    const trimmed = subtaskInput.trim()
-    if (!trimmed) return
-    setSubtasks((prev) => [...prev, trimmed])
+    const trimmedTitle = subtaskInput.trim()
+    if (!trimmedTitle) return
+    setSubtasks((prev) => [...prev, { title: trimmedTitle, description: subtaskDescInput.trim() }])
     setSubtaskInput('')
+    setSubtaskDescInput('')
   }
 
   /**
@@ -101,6 +107,15 @@ function TaskList({
             ))}
           </select>
         </div>
+
+        <div className="control-group">
+          <label>Date</label>
+          <input
+            type="date"
+            value={filterDate}
+            onChange={(e) => onFilterDateChange(e.target.value)}
+          />
+        </div>
       </div>
 
       <div className="progress-section">
@@ -122,9 +137,20 @@ function TaskList({
           <input
             id="newTask"
             type="text"
-            placeholder="Describe the task..."
+            placeholder="Task title..."
             value={newTaskTitle}
             onChange={(e) => onNewTaskTitleChange(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleCreateTask()
+              }
+            }}
+          />
+          <input
+            type="text"
+            placeholder="Task description..."
+            value={newTaskDescription}
+            onChange={(e) => onNewTaskDescriptionChange(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 handleCreateTask()
@@ -141,9 +167,21 @@ function TaskList({
           <div className="subtask-input-row">
             <input
               type="text"
-              placeholder="Add a subtask..."
+              placeholder="Subtask title..."
               value={subtaskInput}
               onChange={(e) => setSubtaskInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault()
+                  handleAddSubtask()
+                }
+              }}
+            />
+            <input
+              type="text"
+              placeholder="Subtask description..."
+              value={subtaskDescInput}
+              onChange={(e) => setSubtaskDescInput(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   e.preventDefault()
@@ -159,13 +197,17 @@ function TaskList({
             <ul className="subtasks-preview">
               {subtasks.map((st, i) => (
                 <li key={i}>
-                  <span>{st}</span>
+                  <div>
+                    <strong>{st.title}</strong>
+                    {st.description && <span>{st.description}</span>}
+                  </div>
                   <button
                     type="button"
-                    className="secondary small"
+                    className="secondary icon-only delete-red"
                     onClick={() => handleRemoveSubtask(i)}
+                    aria-label="Remove subtask"
                   >
-                    Remove
+                    ×
                   </button>
                 </li>
               ))}
