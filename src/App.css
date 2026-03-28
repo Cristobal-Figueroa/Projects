@@ -381,11 +381,11 @@
 
 .profile__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 24px;
 }
 
-@media (max-width: 768px) {
+@media (min-width: 768px) {
   .profile__grid {
     grid-template-columns: 1fr;
   }
@@ -417,28 +417,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.achievements {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.achievement-badge {
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #fbbf24, #f59e0b);
-  color: #78350f;
-  font-weight: 600;
-  text-align: center;
-}
-
-.no-achievements {
-  color: var(--muted);
-  font-style: italic;
-  text-align: center;
-  padding: 20px 0;
 }
 
 .activity-list {

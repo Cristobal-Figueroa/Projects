@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 
 /**
  * Renders a user profile page allowing display name changes.
- * Shows username from localStorage, total completed tasks, achievements, and activity stats.
+ * Shows username from localStorage, total completed tasks, and activity stats.
  */
 function Profile({ tasks }) {
   const [displayName, setDisplayName] = useState('')
@@ -97,16 +97,6 @@ function Profile({ tasks }) {
     return entries.reduce((a, b) => a[1] > b[1] ? a : b)[0]
   })()
 
-  /**
-   * Achievement badges based on stats.
-   */
-  const achievements = []
-  if (totalCompleted >= 10) achievements.push('First Decade')
-  if (totalCompleted >= 50) achievements.push('Task Master')
-  if (completionStreak >= 7) achievements.push('Week Warrior')
-  if (tasks.length > 0 && tasks.every(t => t.completed)) achievements.push('Clean Slate')
-  if (recentTasks.length >= 5) achievements.push('Productive Week')
-
   return (
     <section className="profile">
       <h2>Profile</h2>
@@ -153,36 +143,21 @@ function Profile({ tasks }) {
         </div>
 
         <div className="profile__panel">
-          <h3>Achievements</h3>
-          <div className="achievements">
-            {achievements.length > 0 ? (
-              achievements.map((badge, i) => (
-                <div key={i} className="achievement-badge">
-                  🏆 {badge}
-                </div>
-              ))
-            ) : (
-              <p className="no-achievements">Complete more tasks to unlock achievements!</p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="profile__panel">
-        <h3>Recent Activity</h3>
-        <ul className="activity-list">
-          {tasks.slice(0, 5).map((task) => (
-            <li key={task.id} className={`activity-item ${task.completed ? 'completed' : ''}`}>
-              <span className="activity-title">{task.title}</span>
-              <span className="activity-meta">
-                {task.category && <span className="activity-category">{task.category}</span>}
-                <span className="activity-date">
-                  {new Date(task.createdAt).toLocaleDateString()}
+          <h3>Recent Activity</h3>
+          <ul className="activity-list">
+            {tasks.slice(0, 5).map((task) => (
+              <li key={task.id} className={`activity-item ${task.completed ? 'completed' : ''}`}>
+                <span className="activity-title">{task.title}</span>
+                <span className="activity-meta">
+                  {task.category && <span className="activity-category">{task.category}</span>}
+                  <span className="activity-date">
+                    {new Date(task.createdAt).toLocaleDateString()}
+                  </span>
                 </span>
-              </span>
-            </li>
-          ))}
-        </ul>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </section>
   )
