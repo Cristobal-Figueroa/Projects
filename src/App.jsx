@@ -146,6 +146,8 @@ function App() {
   const [tasks, setTasks] = useState(() => getStoredTasks())
   const [newTaskTitle, setNewTaskTitle] = useState('')
   const [newTaskDescription, setNewTaskDescription] = useState('')
+  const [newTaskCategory, setNewTaskCategory] = useState('General')
+  const [newTaskDate, setNewTaskDate] = useState(new Date().toISOString().split('T')[0])
   const [filter, setFilter] = useState('all')
   const [sortBy, setSortBy] = useState('date')
   const [selectedCategory, setSelectedCategory] = useState('All')
@@ -172,7 +174,7 @@ function App() {
    * Adds a new task to the list when the input has a non-empty value.
    * Accepts an optional array of subtask titles and descriptions.
    */
-  const handleAddTask = (category = 'General', subtaskData = []) => {
+  const handleAddTask = (subtaskData = []) => {
     const trimmed = newTaskTitle.trim()
     if (!trimmed) {
       return
@@ -183,8 +185,8 @@ function App() {
         title: trimmed,
         description: newTaskDescription.trim(),
         completed: false,
-        category,
-        createdAt: new Date().toISOString(),
+        category: newTaskCategory,
+        createdAt: newTaskDate ? new Date(newTaskDate).toISOString() : new Date().toISOString(),
         subtasks: subtaskData.map(({ title, description }) => ({
           id: uuidv4(),
           title,
@@ -196,6 +198,8 @@ function App() {
     ])
     setNewTaskTitle('')
     setNewTaskDescription('')
+    setNewTaskCategory('General')
+    setNewTaskDate(new Date().toISOString().split('T')[0])
   }
 
   /**
@@ -307,6 +311,10 @@ function App() {
                 onNewTaskTitleChange={setNewTaskTitle}
                 newTaskDescription={newTaskDescription}
                 onNewTaskDescriptionChange={setNewTaskDescription}
+                newTaskCategory={newTaskCategory}
+                onNewTaskCategoryChange={setNewTaskCategory}
+                newTaskDate={newTaskDate}
+                onNewTaskDateChange={setNewTaskDate}
                 filterDate={filterDate}
                 onFilterDateChange={setFilterDate}
               />

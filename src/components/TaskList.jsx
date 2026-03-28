@@ -20,6 +20,10 @@ function TaskList({
   onNewTaskTitleChange,
   newTaskDescription,
   onNewTaskDescriptionChange,
+  newTaskCategory,
+  onNewTaskCategoryChange,
+  newTaskDate,
+  onNewTaskDateChange,
   filterDate,
   onFilterDateChange,
 }) {
@@ -52,13 +56,12 @@ function TaskList({
   }
 
   /**
-   * Calls the parent's onAddTask with the current subtasks and clears the temp list.
-   */
-  const handleCreateTask = () => {
-    const cat = selectedCategory === 'All' ? 'General' : selectedCategory
-    onAddTask(cat, subtasks)
-    setSubtasks([])
-  }
+ * Calls the parent's onAddTask with the current subtasks and clears the temp list.
+ */
+const handleCreateTask = () => {
+  onAddTask(subtasks)
+  setSubtasks([])
+}
 
   return (
     <section className="task-section">
@@ -133,33 +136,52 @@ function TaskList({
 
       <div className="builder">
         <label htmlFor="newTask">Add a task</label>
-        <div className="input-row">
-          <input
-            id="newTask"
-            type="text"
-            placeholder="Task title..."
-            value={newTaskTitle}
-            onChange={(e) => onNewTaskTitleChange(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleCreateTask()
-              }
-            }}
-          />
-          <input
-            type="text"
-            placeholder="Task description..."
-            value={newTaskDescription}
-            onChange={(e) => onNewTaskDescriptionChange(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleCreateTask()
-              }
-            }}
-          />
-          <button type="button" onClick={handleCreateTask}>
-            Add task
-          </button>
+        <div className="builder-main">
+          <div className="input-row">
+            <input
+              id="newTask"
+              type="text"
+              placeholder="Task title..."
+              value={newTaskTitle}
+              onChange={(e) => onNewTaskTitleChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleCreateTask()
+                }
+              }}
+            />
+          </div>
+          <div className="input-row">
+            <input
+              type="text"
+              placeholder="Task description..."
+              value={newTaskDescription}
+              onChange={(e) => onNewTaskDescriptionChange(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleCreateTask()
+                }
+              }}
+            />
+          </div>
+          <div className="input-row">
+            <select
+              value={newTaskCategory}
+              onChange={(e) => onNewTaskCategoryChange(e.target.value)}
+            >
+              <option value="General">General</option>
+              <option value="School">School</option>
+              <option value="Personal">Personal</option>
+            </select>
+            <input
+              type="date"
+              value={newTaskDate}
+              onChange={(e) => onNewTaskDateChange(e.target.value)}
+            />
+            <button type="button" onClick={handleCreateTask}>
+              Add task
+            </button>
+          </div>
         </div>
 
         <div className="subtasks-builder">
