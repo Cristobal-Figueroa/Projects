@@ -228,6 +228,7 @@ function App() {
    */
   const handleLogout = () => {
     setUserName('')
+    window.localStorage.removeItem(USER_KEY)
   }
 
   /**
@@ -321,7 +322,7 @@ function App() {
             }
           />
           <Route path="/dashboard" element={<Dashboard tasks={tasks} />} />
-          <Route path="/profile" element={<Profile tasks={tasks} />} />
+          <Route path="/profile" element={<Profile tasks={tasks} onLogout={handleLogout} />} />
           <Route path="*" element={<Navigate to="/tasks" />} />
         </Routes>
       </div>

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
  * Renders a user profile page allowing display name changes.
  * Shows username from localStorage, total completed tasks, and activity stats.
  */
-function Profile({ tasks }) {
+function Profile({ tasks, onLogout }) {
   const [displayName, setDisplayName] = useState('')
   const [tempName, setTempName] = useState('')
   const [saved, setSaved] = useState(false)
@@ -121,6 +121,10 @@ function Profile({ tasks }) {
           <p className="stat-label">Tasks completed</p>
           <p className="stat-value">{totalCompleted}</p>
         </div>
+
+        <button type="button" className="logout-button" onClick={onLogout}>
+          Logout
+        </button>
       </div>
 
       <div className="profile__grid">

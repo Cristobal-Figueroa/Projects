@@ -4,7 +4,7 @@
 A React + Vite single‑page web app that lets users log in, manage tasks and subtasks, filter/sort by status or category, view completion progress, and navigate between Tasks, Dashboard, and Profile views—all persisted to localStorage.
 
 ## Demo Video
-[Watch the demo here](https://youtu.be/tbd)
+[Watch the demo here](https://youtu.be/CG1U8ZqU6SY)
 
 ## Technologies Used
 - React + Vite

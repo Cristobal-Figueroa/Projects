@@ -31,6 +31,10 @@
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.1);
 }
 
 .navbar__brand h1 {
@@ -460,9 +464,23 @@
   color: var(--muted);
 }
 
-.activity-date {
-  font-size: 0.8rem;
-  color: var(--muted);
+.logout-button {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logout-button:hover {
+  border-color: #dc2626;
+  background: #dc2626;
+  color: #fff;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 /* Existing styles kept */
